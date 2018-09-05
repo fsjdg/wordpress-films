@@ -7,7 +7,7 @@ do_action('attach_film_meta_to_title');
 
 $args = array(
     'post_type' => "films",
-    'posts_per_page' => 3
+    'posts_per_page' => 5
 );
 
 $query = new WP_query($args);
@@ -44,5 +44,5 @@ $query = new WP_query($args);
         </main><!-- #main -->
     </div><!-- #primary -->
 
-<?php get_sidebar(); ?>
+<?php wp_reset_postdata(); remove_filter( 'the_post', 'attach_film_meta' ); get_sidebar(); ?>
 <?php get_footer(); ?>

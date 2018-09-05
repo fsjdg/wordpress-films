@@ -149,9 +149,10 @@ function attach_film_meta($post) {
     $meta[] = "Ticket Price: $ticketPrice";
 
     $releaseDate = get_post_meta( $post->ID, 'wpcf-release-date', true);
-    $meta[] = "Release Date: ". date("Y-m-d", $releaseDate);
+    if($releaseDate && $releaseDate != "")
+        $meta[] = "Release Date: ". date("Y-m-d", $releaseDate);
 
-    $metaString = join(", ", $meta);
+    $metaString = join(" - ", $meta);
 
     $post->post_title = "<h1 class='entry-title'>{$post->post_title}</h1><small>$metaString</small>";
 
