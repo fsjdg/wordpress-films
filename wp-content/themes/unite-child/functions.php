@@ -125,3 +125,34 @@ function create_films_taxonomies() {
 
     register_taxonomy( 'actor', 'films', $args );
 }
+
+// Hook for Film meta
+add_action( 'attach_film_meta_to_title', 'attach_film_meta_to_title' );
+
+function attach_film_meta_to_title() {
+
+    add_filter('the_post', 'attach_film_meta');
+
+}
+
+function attach_film_meta($post) {
+
+    $meta = array();
+
+    $terms = wp_get_post_terms( $post->ID, array( 'genre', 'country' ) );
+
+    foreach ( $terms as $term ){
+        $meta[] = ucfirst($term->taxonomy).": ".$term->name;
+    }
+
+    $ticketPrice = get_post_meta( $post->ID, 'wpcf-ticket-price', true);
+    $meta[] = "Ticket Price: $ticketPrice";
+
+    $releaseDate = get_post_meta( $post->ID, 'wpcf-release-date', true);
+    $meta[] = "Release Date: ". date("Y-m-d", $releaseDate);
+
+    $metaString = join(", ", $meta);
+
+    $post->post_title = "<h1 class='entry-title'>{$post->post_title}</h1><small>$metaString</small>";
+
+}
